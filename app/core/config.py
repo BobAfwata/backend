@@ -3,7 +3,8 @@ import os
 
 # Corrected the typo 'postgress' -> 'postgres'
 # Ensure this matches the password you set for the postgres user
-DEFAULT_DATABASE_URL = "postgresql://postgres:soongsil@localhost:5432/business_app"
+
+DEFAULT_DATABASE_URL = os.getenv("DATABASE_URL")
 
 class Settings:
     # Logic: It checks the Environment Variable first. 
