@@ -1,21 +1,24 @@
 import os
+from pydantic_settings import BaseSettings
 
 
-# Corrected the typo 'postgress' -> 'postgres'
-# Ensure this matches the password you set for the postgres user
+class Settings(BaseSettings):
+    # Database settings
+    database_url: str = os.getenv("DATABASE_URL", "sqlite:///./business_system.db")
 
-DEFAULT_DATABASE_URL = os.getenv("DATABASE_URL")
+    # Security settings
+    secret_key: str = os.getenv("SECRET_KEY", "supersecretkey")  # Change this in production!
+    algorithm: str = "HS256"
+    access_token_expire_minutes: int = 60
 
-class Settings:
-    # Logic: It checks the Environment Variable first. 
-    # If not found, it falls back to our corrected local string.
-    DATABASE_URL = os.getenv("DATABASE_URL", DEFAULT_DATABASE_URL)
-    
-    SECRET_KEY = "supersecretkey"
-    ALGORITHM = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES = 60
-    WHATSAPP_TOKEN = os.getenv("WHATSAPP_TOKEN", "your_token")
-    WHATSAPP_PHONE_ID = os.getenv("WHATSAPP_PHONE_ID", "your_phone_id")
+    # WhatsApp settings
+    whatsapp_token: str = os.getenv("WHATSAPP_TOKEN", "your_token")
+    whatsapp_phone_id: str = os.getenv("WHATSAPP_PHONE_ID", "your_phone_id")
+
+    class Config:
+        env_file = ".env"
+        case_sensitive = False
+
 
 settings = Settings()
 
